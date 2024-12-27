@@ -6,8 +6,8 @@ import { FilmSelect } from "./FilmSelect";
 import { useDebounce } from "../hooks/useDebounce";
 
 function SubCategory({ item: { name, id, filmIds, temp }, isEdited, actions }) {
-  const [value, setValue] = useState(name);
-  const debouncedName = useDebounce(value);
+  const [updatedName, setUpdatedName] = useState(name);
+  const debouncedName = useDebounce(updatedName);
 
   const [isAdding, setIsAdding] = useState(false);
   const toggleAddition = () => setIsAdding(!isAdding);
@@ -55,7 +55,7 @@ function SubCategory({ item: { name, id, filmIds, temp }, isEdited, actions }) {
               <Folder />
             </Avatar>
           </ListItemAvatar>
-          <Input value={value} onChange={(e) => setValue(e.target.value)} />
+          <Input value={updatedName} onChange={(e) => setUpdatedName(e.target.value)} />
         </ListItem>
         <ul>
           {filmList}
@@ -65,7 +65,7 @@ function SubCategory({ item: { name, id, filmIds, temp }, isEdited, actions }) {
     );
   }
   return (
-    <>
+    <Box>
       <ListItem>
         <ListItemAvatar>
           <Avatar>
@@ -75,7 +75,7 @@ function SubCategory({ item: { name, id, filmIds, temp }, isEdited, actions }) {
         <ListItemText primary={name} />
       </ListItem>
       <ul>{filmList}</ul>
-    </>
+    </Box>
   );
 }
 

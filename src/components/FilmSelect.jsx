@@ -12,12 +12,13 @@ function FilmSelect({ onSave, onCancel, filmIds }) {
         {name}
       </MenuItem>
     ));
-  if (filmOptions.length === 0)
+  if (filmOptions.length === 0) {
     return (
       <Alert icon={<Check fontSize="inherit" />} severity="info" sx={{ my: 1 }}>
         Все доступные фильмы уже добавлены в подкатегорию
       </Alert>
     );
+  }
   const styles = { display: "flex", justifyContent: "stretch", alignItems: "end", px: 2, mb: 2 };
 
   return (

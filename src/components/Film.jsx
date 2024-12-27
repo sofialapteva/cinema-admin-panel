@@ -6,26 +6,14 @@ import { INITIAL_STATE } from "../state";
 function Film({ id, isEdited, actions: { onDeleteFilm } }) {
   const film = INITIAL_STATE.films.find((el) => el.id === id);
   if (!film) return;
-  const secondaryAction = (
+  const secondaryAction = isEdited ? (
     <IconButton edge="end" aria-label="delete" onClick={() => onDeleteFilm(id)} title={`Удалить фильм ${film.name}`}>
       <Delete />
     </IconButton>
-  );
+  ) : null;
 
-  if (isEdited) {
-    return (
-      <ListItem secondaryAction={secondaryAction}>
-        <ListItemAvatar>
-          <Avatar>
-            <Theaters />
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary={film.name} />
-      </ListItem>
-    );
-  }
   return (
-    <ListItem>
+    <ListItem secondaryAction={secondaryAction}>
       <ListItemAvatar>
         <Avatar>
           <Theaters />

@@ -5,8 +5,8 @@ import { SubCategory } from "./SubCategory";
 import { useDebounce } from "../hooks/useDebounce";
 
 function Category({ item: { id, temp, name, subCategories }, actions }) {
-  const [value, setValue] = useState(name);
-  const debouncedName = useDebounce(value);
+  const [updatedName, setUpdatedName] = useState(name);
+  const debouncedName = useDebounce(updatedName);
 
   const [isEdited, setIsEdited] = useState(false);
   const toggleIsEdited = () => setIsEdited(!isEdited);
@@ -26,14 +26,14 @@ function Category({ item: { id, temp, name, subCategories }, actions }) {
   ));
   const secondaryAction = (
     <>
-      <IconButton edge="end" aria-label="delete" onClick={toggleIsEdited} title={`Сохранить категорию ${value}`}>
+      <IconButton edge="end" aria-label="delete" onClick={toggleIsEdited} title={`Сохранить категорию ${updatedName}`}>
         <Save />
       </IconButton>{" "}
       <IconButton
         edge="end"
         aria-label="delete"
         onClick={() => onDeleteCategory(id || temp)}
-        title={`Сохранить категорию ${value}`}
+        title={`Сохранить категорию ${updatedName}`}
       >
         <Delete />
       </IconButton>
@@ -49,7 +49,7 @@ function Category({ item: { id, temp, name, subCategories }, actions }) {
               <Folder />
             </Avatar>
           </ListItemAvatar>
-          <Input value={value} onChange={(e) => setValue(e.target.value)} />
+          <Input value={updatedName} onChange={(e) => setUpdatedName(e.target.value)} />
         </ListItem>
         <ul>{subCategoryList}</ul>
         <Button
@@ -72,7 +72,7 @@ function Category({ item: { id, temp, name, subCategories }, actions }) {
             edge="end"
             aria-label="delete"
             onClick={toggleIsEdited}
-            title={`Редактировать категорию ${value}`}
+            title={`Редактировать категорию ${updatedName}`}
           >
             <Edit />
           </IconButton>
@@ -83,7 +83,7 @@ function Category({ item: { id, temp, name, subCategories }, actions }) {
             <Folder />
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary={value} />
+        <ListItemText primary={updatedName} />
       </ListItem>
       <ul>{subCategoryList}</ul>
     </Box>

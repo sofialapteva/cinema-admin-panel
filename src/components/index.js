@@ -1,6 +1,6 @@
 import { Category } from "./Category";
-import { SubCategory } from "./SubCategory";
 import { Film } from "./Film";
 import { FilmSelect } from "./FilmSelect";
+import { SubCategory } from "./SubCategory";
 
-export { Category, SubCategory, Film, FilmSelect };
+export { Category, Film, FilmSelect, SubCategory };
