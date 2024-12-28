@@ -4,46 +4,47 @@ import { IconButton, Button, Box, ListItem, ListItemAvatar, Avatar, Input, ListI
 import { Film } from "./Film";
 import { FilmSelect } from "./FilmSelect";
 import { useDebounce } from "../hooks/useDebounce";
+import { getActions } from "../state";
 
-function SubCategory({ item: { name, id, filmIds, temp }, isEdited, actions }) {
+function SubCategory({ item: { name, id, filmIds, temp }, category, isEdited, dispatch }) {
   const [updatedName, setUpdatedName] = useState(name);
   const debouncedName = useDebounce(updatedName);
 
   const [isAdding, setIsAdding] = useState(false);
   const toggleAddition = () => setIsAdding(!isAdding);
 
-  const { onRenameSubCategory, onDeleteSubCategory } = actions;
+  const { onDeleteSubCategory, onRenameSubCategory, onAddFilm, onDelete } = getActions(dispatch);
+
   useEffect(() => {
-    onRenameSubCategory(id || temp, debouncedName);
+    onRenameSubCategory(category, id || temp, debouncedName);
   }, [debouncedName]);
 
-  const childActions = Object.entries(actions).reduce((acc, [key, callback]) => {
-    if (typeof callback() === "function") return { ...acc, [key]: callback(id || temp) };
-    return acc;
-  }, {});
-  const filmList = filmIds.map((id) => <Film id={id} key={id} isEdited={isEdited} actions={childActions} />);
-
-  const secondaryAction = (
-    <IconButton
-      edge="end"
-      aria-label="delete"
-      onClick={() => onDeleteSubCategory(id || temp)}
-      title={`Удалить подкатегорию ${name}`}
-    >
-      <Delete />
-    </IconButton>
-  );
+  const filmList = filmIds.map((filmId) => (
+    <Film id={filmId} key={filmId} isEdited={isEdited} onDelete={(film) => onDelete(category, id || temp, film)} />
+  ));
 
   const onSave = (film) => {
-    childActions.onAddFilm(film);
+    onAddFilm(category, id || temp, film);
     toggleAddition();
   };
+
   const filmAdditionHandler = isAdding ? (
     <FilmSelect onCancel={toggleAddition} onSave={onSave} filmIds={filmIds} />
   ) : (
     <Button variant="text" sx={{ color: "text.primary" }} endIcon={<Add />} onClick={toggleAddition}>
       Добавить фильм
     </Button>
+  );
+
+  const secondaryAction = (
+    <IconButton
+      edge="end"
+      aria-label="delete"
+      onClick={() => onDeleteSubCategory(category, id || temp)}
+      title={`Удалить подкатегорию ${name}`}
+    >
+      <Delete />
+    </IconButton>
   );
 
   if (isEdited) {

@@ -3,26 +3,21 @@ import { Save, Folder, Edit, Add, Delete } from "@mui/icons-material";
 import { IconButton, Box, ListItem, ListItemAvatar, Avatar, Input, ListItemText, Button } from "@mui/material";
 import { SubCategory } from "./SubCategory";
 import { useDebounce } from "../hooks/useDebounce";
+import { getActions } from "../state";
 
-function Category({ item: { id, temp, name, subCategories }, actions }) {
+function Category({ item: { id, temp, name, subCategories }, dispatch }) {
   const [updatedName, setUpdatedName] = useState(name);
   const debouncedName = useDebounce(updatedName);
-
   const [isEdited, setIsEdited] = useState(false);
   const toggleIsEdited = () => setIsEdited(!isEdited);
-
-  const { onRenameCategory, onDeleteCategory, onAddSubCategory } = actions;
+  const { onRenameCategory, onDeleteCategory, onAddSubCategory } = getActions(dispatch);
 
   useEffect(() => {
     onRenameCategory(id || temp, debouncedName);
   }, [debouncedName]);
 
-  const childActions = Object.entries(actions).reduce((acc, [key, callback]) => {
-    if (typeof callback() === "function") return { ...acc, [key]: callback(id || temp) };
-    return acc;
-  }, {});
   const subCategoryList = subCategories.map((item) => (
-    <SubCategory key={item.id || item.temp} item={item} isEdited={isEdited} actions={childActions} />
+    <SubCategory key={item.id || item.temp} category={id || temp} item={item} isEdited={isEdited} dispatch={dispatch} />
   ));
   const secondaryAction = (
     <>

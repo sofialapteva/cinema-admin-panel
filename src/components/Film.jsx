@@ -3,11 +3,11 @@ import { Delete, Theaters } from "@mui/icons-material";
 import { IconButton, ListItem, ListItemAvatar, Avatar, ListItemText } from "@mui/material";
 import { INITIAL_STATE } from "../state";
 
-function Film({ id, isEdited, actions: { onDeleteFilm } }) {
+function Film({ id, isEdited, onDelete }) {
   const film = INITIAL_STATE.films.find((el) => el.id === id);
   if (!film) return;
   const secondaryAction = isEdited ? (
-    <IconButton edge="end" aria-label="delete" onClick={() => onDeleteFilm(id)} title={`Удалить фильм ${film.name}`}>
+    <IconButton edge="end" aria-label="delete" onClick={() => onDelete(id)} title={`Удалить фильм ${film.name}`}>
       <Delete />
     </IconButton>
   ) : null;
