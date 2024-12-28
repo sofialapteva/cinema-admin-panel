@@ -1,4 +1,4 @@
-import { isDefined } from "./utils";
+import { isDefined } from "../utils";
 
 export const SUBCATEGORY_TEMPLATE = {
   id: null,
@@ -97,7 +97,6 @@ export function getActions(dispatch) {
 }
 
 export function categoryReducer(categories, action) {
-  console.log(action);
   if (!isDefined(...Object.values(action))) return;
   switch (action.type) {
     case "add-category": {
